@@ -1,0 +1,21 @@
+# Node modules - downloaded automatically via npm install
+node_modules/
+
+# Environment variables - contains secrets, never commit this
+.env
+
+# Log files
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Runtime data
+pids/
+*.pid

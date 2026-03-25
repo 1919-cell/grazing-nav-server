@@ -22,7 +22,7 @@ async function seed() {
     name: 'System Admin', phone: '+255700000000',
     password: 'admin123', role: 'admin',
   });
-  console.log('✅ Admin created — login with secret key + password: admin123');
+  console.log(' Admin created — login with secret key + password: admin123');
   process.exit(0);
 }
 seed().catch((e) => { console.error(e); process.exit(1); });

@@ -88,6 +88,33 @@ router.get('/zones', async (req, res) => {
   }
 });
 
+// ── GET /device/map ───────────────────────────────────────────
+// Pastoralists see their own animal devices on the map.
+// Admins see all devices.
+router.get('/map', protect, async (req, res) => {
+  try {
+    const query = req.user.role === 'admin' ? {} : { owner: req.user._id };
+    const devices = await Device.find(query).populate('owner', 'name phone');
+
+    const payload = devices
+      .filter((device) => device.lastLocation?.lat != null && device.lastLocation?.lng != null)
+      .map((device) => ({
+        deviceId: device.deviceId,
+        label: device.label,
+        lat: device.lastLocation.lat,
+        lng: device.lastLocation.lng,
+        updatedAt: device.lastLocation.updatedAt,
+        isActive: device.isActive,
+        ownerId: device.owner?._id,
+        ownerName: device.owner?.name,
+      }));
+
+    res.json(payload);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── POST /device/register ─────────────────────────────────────
 // Admin registers a new ESP32 device and assigns it to a user.
 // Body: { deviceId, label, ownerPhone }
